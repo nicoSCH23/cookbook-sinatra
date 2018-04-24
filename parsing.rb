@@ -25,6 +25,14 @@ class Scraping
     prep_time = doc.search(".recipe-infos__total-time__value").text
     paragraphs = doc.search(".recipe-preparation__list__item")
     description = paragraphs.map(&:text).join("\n").gsub("\t","#")
-    return {name: name, description: description, prep_time: prep_time, difficulty: difficulty}
+    picture_path = doc.css("#af-diapo-desktop-0_img").map{ |i| i['src'] }.uniq.join('')
+    return {name: name, description: description, prep_time: prep_time, difficulty: difficulty, picture_path: picture_path}
   end
 end
+
+ # img_urls = doc.css('.gallery img').map{ |i| i['src'] } #search through the CSS in the doc object for img tags with a class of Gallery and grab the element in its SRC tag
+ # img_captions = doc.css('.gallery .image_alt').map{ |alt| alt } #grab the ALT element content from the CSS that contains gallery and image alt classes
+
+ # #Prints out unique image urls
+ # puts img_urls.uniq
+

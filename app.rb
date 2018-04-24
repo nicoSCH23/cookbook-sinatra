@@ -5,9 +5,9 @@ require "better_errors"
 require_relative 'recipe'
 require_relative 'cookbook'
 require_relative 'parsing'
+require_relative 'top'
+require_relative 'top_repo'
 
-csv_file = File.join(__dir__, 'recipes.csv')
-scrap = Scraping.new
 
 configure :development do
   use BetterErrors::Middleware
@@ -15,13 +15,58 @@ configure :development do
 end
 
 get '/' do
-  cookbook = Cookbook.new(csv_file)
+  cookbook = Cookbook.new(File.join(__dir__, 'recipes.csv'))
   @recipes = cookbook.all
   erb :index
 end
 
-get '/team/:username' do
-  puts params[:username]
-  "The username is #{params[:username]}"
+get '/new' do
+  erb :new
 end
 
+post '/recipes' do
+  cookbook = Cookbook.new(File.join(__dir__, 'recipes.csv'))
+  recipe = Recipe.new({name: params[:name],description: params[:description], prep_time: "#{params[:prep_time]} min", difficulty: params[:difficulty]})
+  cookbook.add_recipe(recipe)
+  redirect to '/'
+end
+
+get '/search' do
+  erb :search
+end
+
+post '/scrap' do
+  ingredient = params[:ingredient]
+  scrap = Scraping.new
+  top_five_hash = scrap.search_recipes(ingredient)
+  top_repo = TopRepo.new(File.join(__dir__, 'tops.csv'))
+  top_five_hash.each do |top|
+    t = Top.new({title: top[0], path: top[1]})
+    top_repo.add_top(t)
+  end
+  # erb :top_results, :locals => {:top_five_hash => top_five_hash }
+  redirect to '/select'
+end
+
+get '/select' do
+  top_repo = TopRepo.new(File.join(__dir__, 'tops.csv'))
+  @top_five = top_repo.top_five
+  erb :top_results
+end
+
+
+get '/what/recettes/:path' do
+  cookbook = Cookbook.new(File.join(__dir__, 'recipes.csv'))
+  scrap = Scraping.new
+  path = "/recettes/#{params[:path]}"
+  attributes = scrap.scrape_details(path)
+  recipe = Recipe.new(attributes)
+  cookbook.add_recipe(recipe)
+  redirect to '/'
+end
+
+get '/recipes/:index' do
+  cookbook = Cookbook.new(File.join(__dir__, 'recipes.csv'))
+  cookbook.remove_recipe(params[:index].to_i)
+  redirect to '/'
+end

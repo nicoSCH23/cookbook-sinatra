@@ -32,23 +32,31 @@ class Cookbook # Repository, Fake Database
   def save_to_csv
     CSV.open(@csv_file, 'w') do |csv|
       @recipes.each do |recipe|
-        csv.puts([recipe.name, recipe.description, recipe.prep_time, recipe.done, recipe.difficulty])
+        csv.puts([recipe.name, recipe.description, recipe.prep_time, recipe.done, recipe.difficulty, recipe.picture_path])
+      end
+    end
+  end
+  def save_to_csv
+    CSV.open(@csv_file, 'w', write_headers: true, headers: ["name", "description", "done", "difficulty", "prep_time", "picture_path"]) do |csv|
+      @recipes.each do |recipe|
+        csv.puts([recipe.name, recipe.description, recipe.done, recipe.difficulty, recipe.prep_time, recipe.picture_path])
       end
     end
   end
 
+
   def load_csv
     return unless File.exist?(@csv_file)
 
-    CSV.foreach(@csv_file) do |row|
-      attributes = {
-        name: row[0],
-        description: row[1],
-        prep_time: row[2],
-        done: row[3],
-        difficulty: row[4]
-      }
-      @recipes << Recipe.new(attributes)
+    csv_options = { headers: :first_row, header_converters: :symbol }
+    CSV.foreach(@csv_file, csv_options) do |row|
+      row[:name] = row[:name]
+      row[:description] = row[:description]
+      row[:done] = row[:done]
+      row[:difficulty] = row[:difficulty]
+      row[:prep_time] = row[:prep_time]
+      row[:picture_path] = row[:picture_path]
+      @recipes << Recipe.new(row)
     end
   end
 end

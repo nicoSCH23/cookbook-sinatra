@@ -1,0 +1,41 @@
+<h1>Which recipe would you like?</h1>
+<ul>
+  <% @top_five.each_with_index do |top, index| %>
+    <div class="product">
+      <div class='product-body'>
+        <h3><a href="/what/<%= top.path %>"><%= top.title %></h3>
+      </div>
+      <ul class="list-inline product-controls product-controls-hidden hidden-sm hidden-xs">
+        <li><a href=""><i class="fa fa-heart"></i></a></li>
+      </ul>
+    </div>
+  <% end %>
+</ul>
+<!--
+
+<form method="get" action="/new">
+    <input type="submit" class= "btntest" value="Add a recipe">
+</form>
+
+<h1>Add a recipe</h1>
+
+<form action="/recipes" method="post">
+  <div>
+    <label for="name">Name</label>
+    <input type="text" name="name">
+  </div>
+  <div>
+    <label for="name">Description</label>
+    <input type="text" name="description">
+  </div>
+  <div>
+    <label for="name">Preparation time</label>
+    <input type="text" name="prep_time">
+  </div>
+  <div>
+    <label for="name">Difficulty?</label>
+    <input type="text" name="difficulty">
+  </div>
+  <input type="submit" value="Add to cookbook">
+</form>
+ -->
