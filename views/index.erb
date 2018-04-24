@@ -1,0 +1,22 @@
+
+<div class="row">
+  <div class="col-12 text-center">
+    <h1>Best Cookbook</h1>
+  </div>
+</div>
+<p>You currently have in your cookbook:</p>
+<div class="row justify-content-around w-600">
+<ul>
+  <% @recipes.each_with_index do |recipe, index| %>
+    <li><%= recipe.name %>: <%= recipe.difficulty %> - <a href="/recipes/<%= index + 1 %>">Destroy</a></li>
+  <% end %>
+</ul>
+</div>
+<a href="/new">Add a recipe</a>
+
+
+
+
+
+
+
