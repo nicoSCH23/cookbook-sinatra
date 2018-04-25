@@ -22,26 +22,27 @@ class TopRepo # Repository, Fake Database
     save_to_csv
   end
 
-  private
-
   def save_to_csv
-    CSV.open(@csv_file, 'w') do |csv|
+    CSV.open(@csv_file, 'w', write_headers: true, headers: ["name", "path", "description", "difficulty", "prep_time", "picture_path"]) do |csv|
       @tops.each do |top|
-        csv.puts([top.title, top.path])
+        csv.puts([top.name, top.path, top.description, top.difficulty, top.prep_time, top.picture_path])
       end
     end
   end
 
+
   def load_csv
     return unless File.exist?(@csv_file)
 
-    CSV.foreach(@csv_file) do |row|
-      attributes = {
-        title: row[0],
-        path: row[1],
-      }
-      @tops << Top.new(attributes)
+    csv_options = { headers: :first_row, header_converters: :symbol }
+    CSV.foreach(@csv_file, csv_options) do |row|
+      row[:name] = row[:name]
+      row[:path] = row[:path]
+      row[:description] = row[:description]
+      row[:difficulty] = row[:difficulty]
+      row[:prep_time] = row[:prep_time]
+      row[:picture_path] = row[:picture_path]
+      @tops << Top.new(row)
     end
   end
 end
-

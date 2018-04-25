@@ -41,7 +41,8 @@ post '/scrap' do
   top_five_hash = scrap.search_recipes(ingredient)
   top_repo = TopRepo.new(File.join(__dir__, 'tops.csv'))
   top_five_hash.each do |top|
-    t = Top.new({title: top[0], path: top[1]})
+    attributes = scrap.scrape_details(top[1])
+    t = Top.new({path: top[1], name: attributes[:name], description: attributes[:description], prep_time: attributes[:prep_time], difficulty: attributes[:difficulty], picture_path: attributes[:picture_path]})
     top_repo.add_top(t)
   end
   # erb :top_results, :locals => {:top_five_hash => top_five_hash }

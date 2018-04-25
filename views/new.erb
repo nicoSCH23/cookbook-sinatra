@@ -1,6 +1,6 @@
 <h1>Add a recipe</h1>
 
-<form action="/recipes" method="post">
+<!-- <form action="/recipes" method="post">
   <div>
     <label for="name">Name</label>
     <input type="text" name="name">
@@ -18,4 +18,25 @@
     <input type="text" name="difficulty">
   </div>
   <input type="submit" value="Add to cookbook">
+</form>
+ -->
+
+<form action="/recipes" method="post">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title of your recipe" name="name">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Description</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Instructions" name="description">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Preparation time in min</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="How many min?" name="prep_time">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Difficulty?</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="" name="difficulty">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>

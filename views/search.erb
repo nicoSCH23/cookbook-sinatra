@@ -1,10 +1,17 @@
 <h1>Search for a recipe</h1>
 
-<form action="/scrap" method="post">
+<!-- <form action="/scrap" method="post">
   <div>
     <label for="name">Ingredient?</label>
     <input type="text" name="ingredient">
   </div>
   <input type="submit" value="Search">
 </form>
-
+ -->
+<form action="/scrap" method="post">
+  <div class="form-group">
+    <label for="name">Ingredient?</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="which ingredient do you like?" name="ingredient">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
